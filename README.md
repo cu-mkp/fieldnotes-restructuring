@@ -12,5 +12,9 @@ From Fall 2018 onwards, fieldnotes were kept as googledocs (and suite) within th
 - create user-friendly and complete index of pages
 - ensure pages are as complete as possible (internal links, images) and maintain page html in most sustainable way possible
 
-# Summary of tasks and progress
-For 
+## Summary of tasks and progress
+
+For fieldnotes originally from the wiki:
+- Within the wiki, the pages were organized as follows:
+     - Semester + Year
+     - 
