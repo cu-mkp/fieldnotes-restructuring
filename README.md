@@ -22,7 +22,18 @@ For fieldnotes originally from the wiki:
                - Activities
                
 - This hierarchy was not preserved but is the desired one in order to organize and understand all the pages archived in the original export to s3.
-- This has been dones through GREG_CODE
-     - It uses the page that contained the information from the wiki side navigation bar to recursively find the linked pages from Semester+Year down
-     - This results in BLAH
-     - If there are any broken links, they are compiled in a single ERRORS-CSV which can be used to manually correct the links (by looking at context)
+- `organize_field_notes.py` represents an attempt to recreate the original structure
+     - Starting from the wiki's original side navigation bar as the highest level, it attempts to recursively follow links down from Semester+Year -> Fieldnotes -> Student Names -> Activities wherever possible
+     - By creating a tree structure out of these links, this results in something close to the original structure of the wikispace
+     - Unfortunately, many links are broken, missing, incorrect, or do not follow the typical structure
+     - In order to document and fix these errors, they are compiled in various CSVs which can be used to manually correct the links where it is obvious where they should point
+
+- Another source of complication is the encoding of various special characters, e.g. accented vowels
+     - It appears that during the many conversions from original documents to wikispace pages to Google Docs to AWS S3 Bucket to Windows files, some of files had their special characters modified, which results in links breaking when, for example, two different encodings of `é` are used.
+
+- Remaining hurdles include:
+     - locating remaining missing files with broken URLs
+     - ensuring that we are not missing any files that were not linked to at all
+     - deciding on a formal naming convention and folder hierarchy
+     - fixing HTML hyperlinks so that they point to the correct file in the new structure
+     - manually structure the early years (e.g. Fall 2014) which lack a structure even with hyperlinks
