@@ -20,7 +20,7 @@ def main():
                 CORRECTIONS[row[0]] = row[1]
     mapping = {}
     missing = []
-    for semester in [fa14]:
+    for semester in [fa14, sp15, fa15, sp16, fa16, sp17dh, sp17]:
         temp_mapping, temp_missing = semester()
         mapping = merge_no_overwrite(mapping, temp_mapping)
         missing.extend(temp_missing)
@@ -103,14 +103,19 @@ def map_links(parent_file, parent_file_path, files, as_folders=False):
                 continue   # don't add to mapping
 
         if as_folders:
-            mapping[filename] = f'{parent_file_path}/{title}/index.html'
+            new_path = f'{parent_file_path}/{title}/index.html'
         else:
             if filename.rsplit('.')[1] != 'html':
-                # TODO: figure out what to do with non-html files
-                #mapping[filename] = f'{parent_file_path}/{filename}'
-                continue # don't add to mapping
+                # Ignore non-html files.
+                continue
             else:
-                mapping[filename] = f'{parent_file_path}/{title}.html'
+                new_path = f'{parent_file_path}/{title}.html'
+
+        if filename in mapping.keys() and mapping[filename] != new_path:
+            raise Exception(f'Key conflict:\nParent file: \'{parent_file}\'\nParent path: \'{parent_file_path}\'\nFile title: \'{title}\'\n  Key: \'{filename}\'\n  Old: \'{mapping[filename]}\'\n  New: \'{new_path}\'')
+
+        mapping[filename] = new_path
+
     return mapping, missing
 
 def sp17():
@@ -130,6 +135,11 @@ def sp17():
 
     fieldnotes = get_all_links_from_file(FOLDER_PREFIX + fieldnotes_file)
     profiles = get_all_links_from_file(FOLDER_PREFIX + profiles_file)
+
+    # Hard fixes because someone did something terrible 4 years ago
+    fieldnotes = [note for note in fieldnotes if note[1] not in ['Jennifer Gambel Wellington - Field Notes SP17.html', 'Sasha Grabovskiy - Field Notes SP17.html']]
+    fieldnotes.append((sanitize('Jennifer Gambel Wellington'), 'Jennifer Gambel Wellington - Field Notes SP17.html'))
+    fieldnotes.append((sanitize('Sasha Grabovskiy'), 'Sasha Grabovskiy - Field Notes SP17.html'))
 
     fieldnotes_mapping, fieldnotes_missing = map_links(fieldnotes_file, f'{semester_name}/{FIELDNOTES_FOLDER_NAME}', fieldnotes, as_folders=True)
     profiles_mapping, profiles_missing = map_links(profiles_file, f'{semester_name}/{PROFILES_FOLDER_NAME}', profiles, as_folders=False)
@@ -439,9 +449,15 @@ def fa14():
     filename = unquote('Fall%202014%20Archives.html')
     mapping[filename] = f'{semester_name}/index.html'
 
-    soup = BeautifulSoup(get_html_from_file(FOLDER_PREFIX + filename), 'html.parser')
+    #soup = BeautifulSoup(get_html_from_file(FOLDER_PREFIX + filename), 'html.parser')
 
     # TODO: this mess
+    links = get_all_links_from_file(FOLDER_PREFIX + filename)
+
+    all_mapping, all_missing = map_links(filename, semester_name, links, as_folders=False)
+    del all_mapping['Bread Molding Reconstruction - Spring 2015.html'] # as the name implies, this actually belongs in Spring 2015
+    mapping = merge_no_overwrite(mapping, all_mapping)
+    missing.extend(all_missing)
 
     return mapping, missing
 
