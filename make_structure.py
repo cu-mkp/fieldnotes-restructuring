@@ -7,7 +7,6 @@ import re
 from urllib.parse import unquote
 import csv
 #import unicodedata
-
 from bs4 import BeautifulSoup
 
 def main():
@@ -21,7 +20,7 @@ def main():
                 CORRECTIONS[row[0]] = row[1]
     mapping = {}
     missing = []
-    for semester in [sp16]:
+    for semester in [fa14]:
         temp_mapping, temp_missing = semester()
         mapping = merge_no_overwrite(mapping, temp_mapping)
         missing.extend(temp_missing)
@@ -266,17 +265,20 @@ def sp16():
             continue
 
         student_notes = get_all_links_from_file(FOLDER_PREFIX + student_file)
-        # Some students share links with other students; we put the shared ones in the other students' folders
-        # TODO: confirm how to handle these cases
-        if student_file == 'Robin Reich - Field Notes SP16.html':
-            shared_pages = ['Yuanxie Shi - Field Notes SP16.html', 'Verdigris - 5%.html', 'Priming Canvas with earth red oil paint.html', 'Reich Transferring Images.html']
-            student_notes = filter(lambda page: page[1] not in shared_pages, student_notes)
-        if student_file == 'Teresa Soley - Field Notes SP16.html':
-            shared_pages = ['Goldenberg- Verdigris.html', 'Ndungu - Field Notes SP16 - HCR.html', 'Goldenberg-Painting_With_Distemper.html', 'Teresa Soley - Field Notes SP16 - Annotation Plans.html']
-            student_notes = filter(lambda page: page[1] not in shared_pages, student_notes)
-        if student_file == 'Safety Protocol Examples.html':
-            shared_pages = ['Rosenkranz Buscarino - Verdigris SP16.html']
-            student_notes = filter(lambda page: page[1] not in shared_pages, student_notes)
+
+        # shared file dictionary
+        # shared file : first author
+        shared = { 'Yuanxie Shi - Field Notes SP16.html' : None,
+                   'Verdigris - 5%.html' : None,
+                   'Priming Canvas with earth red oil paint.html' : None,
+                   'Reich Transferring Images.html' : None,
+                   'Teresa Soley - Field Notes SP16 - Annotation Plans.html' : None,
+                   'Goldenberg- Verdigris.html' : None,
+                   'Ndungu - Field Notes SP16 - HCR.html' : None,
+                   'Goldenberg-Painting_With_Distemper.html' : None,
+                   'Rosenkranz Buscarino - Verdigris SP16.html' : None }
+
+        student_notes = list(filter(lambda note: note[1] not in shared.keys() or student_file == shared[note[1]], student_notes))
 
         student_notes_mapping, student_notes_missing = map_links(student_file, new_path.rsplit('/index.html')[0], student_notes, as_folders=False)
 
@@ -286,9 +288,10 @@ def sp16():
     for annotation_file, new_path in annotations_mapping.items():
         pages = get_all_links_from_file(FOLDER_PREFIX + annotation_file)
 
-        if annotation_file == 'Soley - Field Notes SP16 - Varnish Annotation.html':
-            shared_pages = ['.htmlGNS - Field Notes SP16 - Contemporary Recipes', '.htmlGNS - Field Notes SP16 - Secondary Source Notes', '.htmlGNS - Field Notes SP16 - Experimental Field Notes']
-            pages = filter(lambda page: page[1] not in shared_pages, pages)
+        shared = { '.htmlGNS - Field Notes SP16 - Contemporary Recipes' : None,
+                   '.htmlGNS - Field Notes SP16 - Secondary Source Notes' : None,
+                   '.htmlGNS - Field Notes SP16 - Experimental Field Notes' : None }
+        pages = list(filter(lambda page: page[1] not in shared.keys() or annotation_file == shared[page[1]], pages))
 
         pages_mapping, pages_missing = map_links(annotation_file, new_path.rsplit('/index.html')[0], pages, as_folders=False)
 
@@ -298,16 +301,149 @@ def sp16():
     return mapping, missing
 
 def fa15():
-    url = 'http://fieldnotes.makingandknowing.org/mainSpace/Fall%202015.html'
-    soup = BeautifulSoup(get_html(url), 'html.parser')
+    mapping = {}
+    missing = []
+    semester_name = 'fa15'
+
+    filename = unquote('Fall%202015.html')
+    mapping[filename] = f'{semester_name}/index.html'
+
+    soup = BeautifulSoup(get_html_from_file(FOLDER_PREFIX + filename), 'html.parser')
+
+    fieldnotes_file = unquote(soup.find(string=re.compile('Field Notes')).parent['href'])
+    annotations_file = unquote(soup.find(string=re.compile('Annotations')).parent['href'])
+    profiles_file = unquote(soup.find(string=re.compile('Student Profiles')).parent['href'])
+    calendar_file = unquote(soup.find(string=re.compile('Calendar')).parent['href'])
+    hrr_file = unquote(soup.find(string=re.compile('Historical Recipe Reconstruction')).parent['href'])
+    mapping[fieldnotes_file] = f'{semester_name}/{FIELDNOTES_FOLDER_NAME}/index.html'
+    mapping[annotations_file] = f'{semester_name}/annotations/index.html'
+    mapping[profiles_file] = f'{semester_name}/{PROFILES_FOLDER_NAME}/index.html'
+    mapping[calendar_file] = f'{semester_name}/calendar.html'
+    mapping[hrr_file] = f'{semester_name}/historical-recipe-reconstruction.html'
+
+    mapping[unquote('pH%20Strip%20Identification%20Charts.html')] = f'{semester_name}/{FIELDNOTES_FOLDER_NAME}/{sanitize("pH Strip Identification Charts")}.html' # pH strip file
+
+    fieldnotes = get_all_links_from_file(FOLDER_PREFIX + fieldnotes_file)
+    fieldnotes = list(filter(lambda page: page[0] not in [sanitize('Spring 2015 Field Notes'), sanitize('Fall 2014 Field Notes'), sanitize('pH Strip Identification Charts')], fieldnotes)) # Ignore non-field note links.
+    annotations = get_all_links_from_file(FOLDER_PREFIX + annotations_file)
+    profiles = get_all_links_from_file(FOLDER_PREFIX + profiles_file)
+
+    fieldnotes_mapping, fieldnotes_missing = map_links(fieldnotes_file, f'{semester_name}/{FIELDNOTES_FOLDER_NAME}', fieldnotes, as_folders=True)
+    annotations_mapping, annotations_missing = map_links(annotations_file, f'{semester_name}/annotations', annotations, as_folders=False)
+    profiles_mapping, profiles_missing = map_links(profiles_file, f'{semester_name}/{PROFILES_FOLDER_NAME}', profiles, as_folders=False)
+
+    mapping = merge_no_overwrite(mapping, fieldnotes_mapping)
+    mapping = merge_no_overwrite(mapping, annotations_mapping)
+    mapping = merge_no_overwrite(mapping, profiles_mapping)
+    missing.extend(fieldnotes_missing)
+    missing.extend(annotations_missing)
+    missing.extend(profiles_missing)
+
+    for student_file, new_path in fieldnotes_mapping.items():
+        direct_linkers = ['Jenny Boulboulle - Field Notes FA15.html']
+        if student_file in direct_linkers:
+            continue
+
+        student_notes = get_all_links_from_file(FOLDER_PREFIX + student_file)
+
+        # Field notes with multiple authors are saved in the folder of the first author listed on the page.
+        # shared file : student name to be saved under
+        shared = { 'Red Lake Pigments Reconstruction - Cochineal EF-SM.html' : 'Emilie Foyer - Field Notes FA15.html',
+                   'Logwood - EF-SM.html' : 'Emilie Foyer - Field Notes FA15.html',
+                   'Annotation Preparation.html' : 'Marilyn Bowen - Field Notes FA15.html',
+                   'new.html' : 'Danielle Carr - Field Notes - FA15.html',
+                   'Red Lake Pigments.html' : 'Kathryn Kremnitzer - Field Notes FA15.html'
+                   }
+
+        student_notes = list(filter(lambda note: note[1] not in shared.keys() or student_file == shared[note[1]], student_notes))
+
+        student_notes_mapping, student_notes_missing = map_links(student_file, new_path.rsplit('/index.html')[0], student_notes, as_folders=False)
+
+        mapping = merge_no_overwrite(mapping, student_notes_mapping)
+        missing.extend(student_notes_missing)
+
+    return mapping, missing
 
 def sp15():
-    url = 'http://fieldnotes.makingandknowing.org/mainSpace/Spring%202015.html'
-    soup = BeautifulSoup(get_html(url), 'html.parser')
+    mapping = {}
+    missing = []
+    semester_name = 'sp15'
+
+    filename = unquote('Spring%202015.html')
+    mapping[filename] = f'{semester_name}/index.html'
+
+    soup = BeautifulSoup(get_html_from_file(FOLDER_PREFIX + filename), 'html.parser')
+
+    fieldnotes = [(sanitize(title), unquote(url)) for title, url in
+            [('Guilia Chiostrini', 'Chiostrini%2C%20Giuila.html'),
+             ('Celia Durkin', 'Durkin%2C%20Celia.html'),
+             ('Shiye Fu', 'Fu%20Shiye%20Fieldnotes.html'),
+             ('Sofia Gans', 'Gans%2C%20Sofia.html'),
+             ('Caroline Marris', 'Marris%2C%20Caroline.html'),
+             ('Jef Palframan', 'Palframan%2C%20Jef.html'),
+             ('Stephanie Pope', 'Pope%2C%20Stephanie.html'),
+             ('Zhiqi Zhang', 'Zhang%2C%20Zhiqi.html'),
+             ('Jenny Boulboulle', 'Boulboullé%2C%20Jenny.html')]]
+    assignments = [(sanitize(title), unquote(url)) for title, url in
+            [('Bread molding', 'Bread%20Molding%20Reconstruction%20-%20Spring%202015.html'),
+             ('Sand casting recipes', 'Sand%20casting%20recipes.html'),
+             ('Plaster casting', 'Plaster%20Casting%20Recipes.html')]]
+
+    fieldnotes_mapping, fieldnotes_missing = map_links(filename, f'{semester_name}/{FIELDNOTES_FOLDER_NAME}', fieldnotes, as_folders=True)
+    assignments_mapping, assignments_missing = map_links(filename, f'{semester_name}/assignments', assignments, as_folders=False)
+
+    mapping = merge_no_overwrite(mapping, fieldnotes_mapping)
+    mapping = merge_no_overwrite(mapping, assignments_mapping)
+    missing.extend(fieldnotes_missing)
+    missing.extend(assignments_missing)
+
+    for student_file, new_path in fieldnotes_mapping.items():
+        direct_linkers = []
+        if student_file in direct_linkers:
+            continue
+
+        student_notes = get_all_links_from_file(FOLDER_PREFIX + student_file)
+
+        # Field notes with multiple authors are saved in the folder of the first author listed on the page.
+        # If the authors aren't listed on the page, we base it on the url.
+        # shared file : student name to be saved under
+        shared = { 'HRR Marchpane Reconstruction.html' : 'Fu Shiye Fieldnotes.html',
+                   'Bread Molding Reconstruction.html' : 'Gans, Sofia.html',
+                   'gans-durkin alabaster.html' : 'Gans, Sofia.html',
+                   'gans-durkin sand casting.html' : 'Durkin, Celia.html',
+                   'durkin-gans sugar casting.html' : 'Durkin, Celia.html',
+                   'Durkin-Marris Historical Recipe Reconstruction.html' : 'Durkin, Celia.html',
+                   'Marris-Pope Bread Molding Reconstruction.html' : 'Marris, Caroline.html',
+                   'Plaster casting with flowers - field notes.html' : 'Pope, Stephanie.html',
+                   'Sand Casting Field Notes - Giulia Chiostrini.html' : 'Chiostrini, Giulia.html',
+                   'Palframan - Plaster Molding Spring 2015.html' : 'Palframan - Field Notes Spring 2015.html',
+                   }
+
+        student_notes = list(filter(lambda note: note[1] not in shared.keys() or student_file == shared[note[1]], student_notes))
+
+        if student_file == 'Palframan - Field Notes Spring 2015.html':
+            student_notes = list(filter(lambda note: note[1] != 'Palframan - Fieldnotes Fall 2014.html', student_notes))
+
+        student_notes_mapping, student_notes_missing = map_links(student_file, new_path.rsplit('/index.html')[0], student_notes, as_folders=False)
+
+        mapping = merge_no_overwrite(mapping, student_notes_mapping)
+        missing.extend(student_notes_missing)
+
+    return mapping, missing
 
 def fa14():
-    url = 'http://fieldnotes.makingandknowing.org/mainSpace/Fall%202014%20Archives.html'
-    soup = BeautifulSoup(get_html(url), 'html.parser')
+    mapping = {}
+    missing = []
+    semester_name = 'fa14'
+
+    filename = unquote('Fall%202014%20Archives.html')
+    mapping[filename] = f'{semester_name}/index.html'
+
+    soup = BeautifulSoup(get_html_from_file(FOLDER_PREFIX + filename), 'html.parser')
+
+    # TODO: this mess
+
+    return mapping, missing
 
 if __name__ == '__main__':
     main()
