@@ -107,16 +107,16 @@ class Node:
         # get canonical decomposition of unicode text, then re-encode to ascii while ignoring errors
         # in particular we hope this handles 'e%CC%81' and turns it into 'e'
         # text = unicodedata.normalize('NFD', text).encode('ascii', 'ignore').decode('utf-8')
-        
+
         return text
-    
+
     def find_children(self):
         children = []
         depth = self.depth   # We have to define this separately for stupid edge-case reasons. :(
-        
+
         if self.has_error:
             return children
-        
+
         text = self.get_html()
         
         # hard-coded edge cases because I can't be bothered
