@@ -364,7 +364,8 @@ def fa15():
                    'Logwood - EF-SM.html' : 'Emilie Foyer - Field Notes FA15.html',
                    'Annotation Preparation.html' : 'Marilyn Bowen - Field Notes FA15.html',
                    'new.html' : 'Danielle Carr - Field Notes - FA15.html',
-                   'Red Lake Pigments.html' : 'Kathryn Kremnitzer - Field Notes FA15.html'
+                   'Red Lake Pigments.html' : 'Kathryn Kremnitzer - Field Notes FA15.html',
+                   'Making and Knowing - Profile.html' : '' # David McClure's profile page, not a field note, so just ignore
                    }
 
         student_notes = list(filter(lambda note: note[1] not in shared.keys() or student_file == shared[note[1]], student_notes))
