@@ -40,7 +40,7 @@ def main():
         writer.writerows(missing)
 
 #URL_PREFIX = 'http://fieldnotes.makingandknowing.org/mainSpace/'
-FOLDER_PREFIX = '/mnt/c/code/misc/mkp/fieldnotes/mainSpace/'
+FOLDER_PREFIX = '/mnt/c/code/misc/mkp/fieldnotes/archive/mainSpace/'
 
 #mainspace_url = URL_PREFIX + 'space.menu.html'
 #mainspace_doc = get_html(mainspace_url)
