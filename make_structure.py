@@ -15,9 +15,9 @@ def main():
         reader = csv.reader(fp)
         for row in reader:
             if row[0] in CORRECTIONS.keys():
-                raise Exception(f'Key conflict:\n Key: \'{row[0]}\'\n Old: \'{CORRECTIONS[row[0]]}\'\n New: \'{row[1]}\'')
+                raise Exception(f'Key conflict:\n Key: \'{(row[0], row[1])}\'\n Old: \'{CORRECTIONS[(row[0], row[1])]}\'\n New: \'{row[2]}\'')
             else:
-                CORRECTIONS[row[0]] = row[1]
+                CORRECTIONS[(row[0], row[1])] = row[2]
     mapping = {}
     missing = []
     for semester in [fa14, sp15, fa15, sp16, fa16, sp17dh, sp17]:
@@ -92,8 +92,10 @@ def map_links(parent_file, parent_file_path, files, as_folders=False):
     missing = []
     for title, filename in files:
         if not os.path.exists(FOLDER_PREFIX + filename):
-            if filename in CORRECTIONS.keys():
-                filename = CORRECTIONS[filename]
+            if (parent_file, filename) in CORRECTIONS.keys():
+                filename = CORRECTIONS[(parent_file, filename)]
+            elif ('', filename) in CORRECTIONS.keys():
+                filename = CORRECTIONS[('', filename)]
             elif '.html' not in filename:
                 # TODO: determine if this is proper behavior.
                 # The idea here is to not add a link as missing if it's an external link.
@@ -168,7 +170,7 @@ def sp17dh():
 
     soup = BeautifulSoup(get_html_from_file(FOLDER_PREFIX + filename), 'html.parser')
 
-    fieldnotes_file = CORRECTIONS[unquote(soup.find(string=re.compile('Field Notes')).parent['href'])]
+    fieldnotes_file = CORRECTIONS[('', unquote(soup.find(string=re.compile('Field Notes')).parent['href']))]
     mapping[fieldnotes_file] = f'{semester_name}/{FIELDNOTES_FOLDER_NAME}/index.html'
 
     # Course page
@@ -362,7 +364,8 @@ def fa15():
                    'Logwood - EF-SM.html' : 'Emilie Foyer - Field Notes FA15.html',
                    'Annotation Preparation.html' : 'Marilyn Bowen - Field Notes FA15.html',
                    'new.html' : 'Danielle Carr - Field Notes - FA15.html',
-                   'Red Lake Pigments.html' : 'Kathryn Kremnitzer - Field Notes FA15.html'
+                   'Red Lake Pigments.html' : 'Kathryn Kremnitzer - Field Notes FA15.html',
+                   'Making and Knowing - Profile.html' : '' # David McClure's profile page, not a field note, so just ignore
                    }
 
         student_notes = list(filter(lambda note: note[1] not in shared.keys() or student_file == shared[note[1]], student_notes))

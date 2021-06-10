@@ -201,6 +201,7 @@ Ana Estrades.html,"fa15/profiles/estrades,-ana.html"
 Cindy Kok.html,"fa15/profiles/kok,-cindy.html"
 Kathryn Kremnitzer.html,"fa15/profiles/kremnitzer,-kathryn.html"
 Tianhe Lou.html,"fa15/profiles/lou,-tianhe.html"
+Making and Knowing - Profile.html,"fa15/profiles/mcclure,-david.html"
 Siddhartha Shah.html,"fa15/profiles/shah,-siddhartha.html"
 Yuan Yi.html,"fa15/profiles/yi,-yuan.html"
 Bowen -Historical recipe reconstruction fa2015.html,fa15/fieldnotes/marilyn-bowen---field-notes-fa15/historical-recipe-reconstruction.html
@@ -237,7 +238,6 @@ Verdigris.html,fa15/fieldnotes/kathryn-kremnitzer---field-notes-fa15/verdigris.h
 HRR-Blewmanger.html,fa15/fieldnotes/tianhe-lou---field-notes-fa15/hrr-blewmanger.html
 panel.html,fa15/fieldnotes/tianhe-lou---field-notes-fa15/panel.html
 lake pigment.html,fa15/fieldnotes/tianhe-lou---field-notes-fa15/lake-pigment-restruction.html
-Making and Knowing - Profile.html,fa15/fieldnotes/david-mcclure---field-notes-fa15/making-and-knowing---profile.html
 Coloring wood - methods and materials.html,fa15/fieldnotes/david-mcclure---field-notes-fa15/coloring-wood---methods-and-materials.html
 Red madder dye.html,fa15/fieldnotes/david-mcclure---field-notes-fa15/red-madder-dye.html
 Madder dye - results.html,fa15/fieldnotes/david-mcclure---field-notes-fa15/madder-dye---results.html
@@ -396,6 +396,11 @@ Emma Le Pouesard.html,fa16/profiles/emma-le-pouesard.html
 Isabella Lores-Chavez.html,fa16/profiles/isabella-lores-chavez.html
 Caitlyn Sellar.html,fa16/profiles/caitlyn-sellar.html
 Example.html,fa16/profiles/example.html
+Fong & Hiebert - Historical Culinary Reconstruction FA16.html,fa16/fieldnotes/sau-yi-fong/historical-culinary-reconstruction.html
+Fong & Hiebert - Bread Molding FA16.html,fa16/fieldnotes/sau-yi-fong/bread-molding.html
+Fong - Verdigris FA16.html,fa16/fieldnotes/sau-yi-fong/verdigris.html
+Fong & DeVinney - Madder Lake Making FA16.html,fa16/fieldnotes/sau-yi-fong/annotation-plans.html
+Fong - Annotation Buckram Sausage FA16.html,fa16/fieldnotes/sau-yi-fong/fong---annotation-field-notes-for-buckram-sausage-fa16-.html
 DeVinney - HCR FA16.html,fa16/fieldnotes/joslyn-devinney/historical-culinary-reconstruction.html
 DeVinney - BMR FA16.html,fa16/fieldnotes/joslyn-devinney/bread-molding-reconstruction.html
 DeVinney - Verdigris FA16.html,fa16/fieldnotes/joslyn-devinney/verdigris.html
@@ -407,6 +412,18 @@ Donefer-Hickie - V FA16.html,fa16/fieldnotes/ana-matisse-donefer-hickie/verdigri
 Donefer-Hickie - AP-ForCagesFA16.html,fa16/fieldnotes/ana-matisse-donefer-hickie/annotation-plan.html
 Donefer-Hickie - Annotation - ForCagesFA16.html,fa16/fieldnotes/ana-matisse-donefer-hickie/annotation.html
 Donefer-Hickie - MD FA16.html,fa16/fieldnotes/ana-matisse-donefer-hickie/madder-dye.html
+Hiebert & Fong - Historical Culinary Reonstruction FA16.html,fa16/fieldnotes/benjamin-hiebert/historical-culinary-reconstruction.html
+Hiebert & Fong - Bread Molding Reconstruction FA16.html,fa16/fieldnotes/benjamin-hiebert/bread-molding-reconstruction.html
+Hiebert - Verdigris FA16.html,fa16/fieldnotes/benjamin-hiebert/verdigris.html
+Hiebert - Annotation Field Notes Spinet Playing By Itself FA16.html,"fa16/fieldnotes/benjamin-hiebert/hiebert---annotation-field-notes-""spinet-playing-by-itself""-fa16.html"
+Hiebert - Madder lake pigment FA16.html,fa16/fieldnotes/benjamin-hiebert/madder-lake-pigment.html
+"Kang, Charles & Donefer-Hickie, Ana Matisse - Historical Culinary Reconstruction FA16.html",fa16/fieldnotes/changduk-(charles)-kang/historical-culinary-reconstruction.html
+"Lores-Chavez, Isabella & Kang, Charles - Bread Molding Reconstruction FA16.html",fa16/fieldnotes/changduk-(charles)-kang/bread-molding-reconstruction.html
+"Kang, Charles - Verdigris FA16.html",fa16/fieldnotes/changduk-(charles)-kang/verdigris.html
+"Kang, Charles & Lores-Chavez, Isabella - Annotation Plan Draft I FA16.html",fa16/fieldnotes/changduk-(charles)-kang/black-sulfured-wax---annotation-plan-draft-i.html
+"Kang, Charles & Lores-Chavez, Isabella - Annotation Plan Draft II FA16.html",fa16/fieldnotes/changduk-(charles)-kang/black-sulfured-wax---annotation-plan-draft-ii.html
+"Kang, Charles & Lores-Chavez, Isabella - Red (Madder) Lake FA16.html",fa16/fieldnotes/changduk-(charles)-kang/red-(madder)-lake.html
+"Kang, Charles & Lores-Chavez, Isabella - Annotation Black Sulfured Wax FA16.html",fa16/fieldnotes/changduk-(charles)-kang/black-sulfured-wax---field-notes.html
 Le Pouesard - Historical Culinary Reconstruction FA16.html,fa16/fieldnotes/emma-le-pouesard/historical-culinary-reconstruction.html
 Le Pouesard - Bread Mold Reconstruction FA2016.html,fa16/fieldnotes/emma-le-pouesard/bread-mold-reconstruction.html
 Le Pouesard - Verdigris Painting Out FA2016.html,fa16/fieldnotes/emma-le-pouesard/verdigris-painting-out.html
@@ -445,6 +462,7 @@ XML tagging in entry-files.html,sp17dh/fieldnotes/sohini-chattopadhyay/xml-taggi
 XSLT DTD.html,"sp17dh/fieldnotes/sohini-chattopadhyay/xslt,-dtd.html"
 Li - Lab 3 - Metadata SP17.html,sp17dh/fieldnotes/jiayi-li/lab-3-metadata.html
 Liu-Lab3-Metadata SP17DH.html,sp17dh/fieldnotes/xiaomeng-liu/lab-3-metadata.html
+Hiebert - Metadata Assignments - SP17.html,sp17dh/fieldnotes/benjamin-hiebert/metadata-assignments.html
 XML assignments.html,sp17dh/fieldnotes/benjamin-hiebert/xml-assignments.html
 Mehul Kumar - Field Notes SP17.html,sp17dh/fieldnotes/ta-field-notes/mehul-kumar.html
 Rosenkranz - Lab 3 - Metadata SP17.html,sp17dh/fieldnotes/example-dh/lab-3---metadata.html
