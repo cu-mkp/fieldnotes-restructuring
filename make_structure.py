@@ -20,7 +20,7 @@ def main():
                 CORRECTIONS[(row[0], row[1])] = row[2]
     mapping = {}
     missing = []
-    for semester in [fa14, sp15, fa15, sp16, fa16, sp17dh, sp17]:
+    for semester in [fa17]:
         temp_mapping, temp_missing = semester()
         mapping = merge_no_overwrite(mapping, temp_mapping)
         missing.extend(temp_missing)
@@ -117,6 +117,45 @@ def map_links(parent_file, parent_file_path, files, as_folders=False):
             raise Exception(f'Key conflict:\nParent file: \'{parent_file}\'\nParent path: \'{parent_file_path}\'\nFile title: \'{title}\'\n  Key: \'{filename}\'\n  Old: \'{mapping[filename]}\'\n  New: \'{new_path}\'')
 
         mapping[filename] = new_path
+
+    return mapping, missing
+
+def fa17():
+    mapping = {}
+    missing = []
+    semester_name = 'fa17'
+
+    fieldnotes_file = unquote('Field%20Notes%20-%20Fall%202017.html')
+    profiles_file = unquote('Fall%202017%20Students.html')
+    mapping[fieldnotes_file] = f'{semester_name}/{FIELDNOTES_FOLDER_NAME}/index.html'
+    mapping[profiles_file] = f'{semester_name}/{PROFILES_FOLDER_NAME}/index.html'
+
+    fieldnotes = get_all_links_from_file(FOLDER_PREFIX + fieldnotes_file)
+    profiles = get_all_links_from_file(FOLDER_PREFIX + profiles_file)
+
+    fieldnotes_mapping, fieldnotes_missing = map_links(fieldnotes_file, f'{semester_name}/{FIELDNOTES_FOLDER_NAME}', fieldnotes, as_folders=True)
+    profiles_mapping, profiles_missing = map_links(profiles_file, f'{semester_name}/{PROFILES_FOLDER_NAME}', profiles, as_folders=False)
+
+    mapping = merge_no_overwrite(mapping, fieldnotes_mapping)
+    mapping = merge_no_overwrite(mapping, profiles_mapping)
+    missing.extend(fieldnotes_missing)
+    missing.extend(profiles_missing)
+
+    for student_file, new_path in fieldnotes_mapping.items():
+        # Field notes with multiple authors are saved in the folder of the first author listed on the page.
+        # shared file : student name to be saved under
+        shared = {
+                'Stucco_FA17_TYD.html' : 'Dongchung - Field Notes FA17.html',
+                'From madder root to madder lake.html' : 'Nina Elizondo-Garza - Field Notes FA17.html'
+                   }
+
+        student_notes = get_all_links_from_file(FOLDER_PREFIX + student_file)
+        student_notes = list(filter(lambda note: note[1] not in shared.keys() or student_file == shared[note[1]], student_notes))
+
+        student_notes_mapping, student_notes_missing = map_links(student_file, new_path.rsplit('/index.html')[0], student_notes, as_folders=False)
+
+        mapping = merge_no_overwrite(mapping, student_notes_mapping)
+        missing.extend(student_notes_missing)
 
     return mapping, missing
 
