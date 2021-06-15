@@ -7,8 +7,7 @@ SOURCE_PREFIX = '/mnt/c/code/github/fieldnotes-content/mainSpace/'
 DEST_PREFIX = '/mnt/c/code/github/fieldnotes-content/mainSpace/'
 MAPPING_FILE = '/mnt/c/code/github/fieldnotes-reindex/mapping.csv'
 
-# Method may be 'copy_file' or 'move_file'
-METHOD = move_file
+METHOD = 'move'
 
 def main():
     with open(MAPPING_FILE, 'r') as fp:
@@ -18,8 +17,12 @@ def main():
             if first:
                 first = False
                 continue
-            METHOD(os.path.join(SOURCE_PREFIX, src),
-                   os.path.join(DEST_PREFIX, dst))
+            if METHOD = 'move':
+                move_file(os.path.join(SOURCE_PREFIX, src), os.path.join(DEST_PREFIX, dst))
+            elif METHOD = 'copy':
+                copy_file(os.path.join(SOURCE_PREFIX, src), os.path.join(DEST_PREFIX, dst))
+            else:
+                raise Exception('Unrecognized method:', METHOD)
 
 def copy_file(src, dst):
     if os.path.exists(dst):
