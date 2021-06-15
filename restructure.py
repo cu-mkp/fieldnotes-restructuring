@@ -17,9 +17,9 @@ def main():
             if first:
                 first = False
                 continue
-            if METHOD = 'move':
+            if METHOD == 'move':
                 move_file(os.path.join(SOURCE_PREFIX, src), os.path.join(DEST_PREFIX, dst))
-            elif METHOD = 'copy':
+            elif METHOD == 'copy':
                 copy_file(os.path.join(SOURCE_PREFIX, src), os.path.join(DEST_PREFIX, dst))
             else:
                 raise Exception('Unrecognized method:', METHOD)
