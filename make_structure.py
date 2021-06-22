@@ -20,7 +20,8 @@ def main():
                 CORRECTIONS[(row[0], row[1])] = row[2]
     mapping = {}
     missing = []
-    for semester in [fa17]:
+    SEMESTERS = [fa14, sp15, fa15, sp16, fa16, sp17, sp17dh, fa17]
+    for semester in SEMESTERS:
         temp_mapping, temp_missing = semester()
         mapping = merge_no_overwrite(mapping, temp_mapping)
         missing.extend(temp_missing)
