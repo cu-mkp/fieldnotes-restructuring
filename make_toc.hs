@@ -15,9 +15,9 @@ type HtmlString = String
 main = do
     stylesheet <- stylesheetIO
     javascript <- javascriptIO
-    tree <- readFileAsTree "index.txt"
+    tree <- readFileAsTree "toc.txt"
     let doc = makeDocument tree stylesheet javascript
-    writeFile "index.html" doc
+    writeFile "toc.html" doc
     print $ head $ dropWhile isLeaf $ getChildren tree
 
 isLeaf :: Tree a -> Bool
@@ -75,7 +75,7 @@ commonPrefix :: FilePath
 commonPrefix = "/mnt/c/code/github/fieldnotes-content/content"
 
 makeHref :: FilePath -> HtmlString
-makeHref file = "<a href='" ++ file ++ "'>" ++ file ++ "</a>"
+makeHref file = "<a href='" ++ file ++ "'>" ++ takeFileName file ++ "</a>"
 
 makeCollapsible :: FileTree -> HtmlString
 makeCollapsible (Leaf file) = "<li>" ++ makeHref file ++ "</li>\n"
