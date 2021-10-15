@@ -32,8 +32,4 @@ For fieldnotes originally from the wiki:
      - It appears that during the many conversions from original documents to wikispace pages to Google Docs to AWS S3 Bucket to Windows files, some of files had their special characters modified, which results in links breaking when, for example, two different encodings of `é` are used.
 
 - Remaining hurdles include:
-     - locating remaining missing files with broken URLs
-     - ensuring that we are not missing any files that were not linked to at all
-     - deciding on a formal naming convention and folder hierarchy
      - fixing HTML hyperlinks so that they point to the correct file in the new structure
-     - manually structure the early years (e.g. Fall 2014) which lack a structure even with hyperlinks
