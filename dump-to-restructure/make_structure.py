@@ -58,6 +58,8 @@ def merge_no_overwrite(dict1, dict2):
     for k,v in dict1.items():
         new_dict[k] = v
     for k,v in dict2.items():
+        if v in new_dict.values():
+            raise Exception(f'Value conflict:\n  Value: \'{v}\'\n  Old key: \'{[key for key,val in new_dict.items() if val==v][0]}\'\n  New key: \'{k}\'')
         if k in new_dict.keys():
             raise Exception(f'Key conflict:\n  Key: \'{k}\'\n  Old: \'{new_dict[k]}\'\n  New: \'{v}\'')
         else:
@@ -113,6 +115,11 @@ def map_links(parent_file, parent_file_path, files, as_folders=False):
                 continue
             else:
                 new_path = f'{parent_file_path}/{title}.html'
+
+        if new_path in mapping.values():
+            src1 = [k for k,v in mapping.items() if v == new_path][0]
+            if src1 != filename:
+                print('Conflict:\n\tdst: ' + new_path + '\n\tsrc1: ' + src1 + '\n\tsrc2: ' + filename)
 
         if filename in mapping.keys() and mapping[filename] != new_path:
             raise Exception(f'Key conflict:\nParent file: \'{parent_file}\'\nParent path: \'{parent_file_path}\'\nFile title: \'{title}\'\n  Key: \'{filename}\'\n  Old: \'{mapping[filename]}\'\n  New: \'{new_path}\'')
