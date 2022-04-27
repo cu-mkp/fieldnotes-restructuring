@@ -1,6 +1,8 @@
 # fieldnotes
 Various tasks and records regarding the Making and Knowing Project's fieldnotes produced as part of Project courses and activities of hands-on skillbuilding and historical reconstructions.
 
+Works in tandem with https://github.com/cu-mkp/fieldnotes-content where html content pages for M&amp;K fieldnotes are housed
+
 The Project strives to create an openly-accessible and long-term sustainable online versions of these fieldnotes at http://fieldnotes.makingandknowing.org/. 
 
 **NOTE:** the current landing page is an incomplete index.
