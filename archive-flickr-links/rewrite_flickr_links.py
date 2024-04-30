@@ -144,8 +144,8 @@ def record_tag_flickr_data():
                 assert r.status_code == 200, f'file {f}: could not locate object:\n  {s3_object_name}\nfrom flickr url:\n  {anchor["href"]}\nat s3 url:\n  {new_link}\nGot response code: {str(r.status_code)}.\nDebug request:\n  {data["request"]}'
 
                 # look for the script tag associated with the anchor, and destroy it.
-                script = anchor.next_sibling
-                assert script.name == 'script'
+                script = anchor.next_element
+                assert script.name == 'script', f
                 assert script['src'] == '//embedr.flickr.com/assets/client-code.js'
                 
                 # save the album id, if any.
@@ -262,7 +262,6 @@ def fix_tags(dry_run=True):
                     src['src'] = s3_url
                     img.append(src)
                     img.append('Your browser does not support the video tag.')
-                    print(img)
                 else:
                     # modify the img to use the AWS link
                     img['src'] = s3_url
@@ -270,8 +269,8 @@ def fix_tags(dry_run=True):
                 del anchor['data-flicker-embed']
 
                 # look for the script tag associated with the anchor, and destroy it.
-                script = anchor.next_sibling
-                assert script.name == 'script'
+                script = anchor.parent.script
+                assert script.name == 'script', anchor.parent
                 assert script['src'] == '//embedr.flickr.com/assets/client-code.js'
                 script.decompose()
 
