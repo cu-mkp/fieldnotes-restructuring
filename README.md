@@ -1,4 +1,6 @@
 # fieldnotes
+[![DOI](https://zenodo.org/badge/309499051.svg)](https://doi.org/10.5281/zenodo.16755983)
+
 Various tasks and records regarding the Making and Knowing Project's fieldnotes produced as part of Project courses and activities of hands-on skillbuilding and historical reconstructions.
 
 Works in tandem with https://github.com/cu-mkp/fieldnotes-content where html content pages for M&amp;K fieldnotes are housed
